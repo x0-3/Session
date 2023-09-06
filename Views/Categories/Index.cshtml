@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Session.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section>
+
+    <h1 class="text-center text-2xl font-semibold my-9">Category</h1>
+
+    <div class="flex my-9 ml-9" id="add_button">
+
+        <a class="w-20 text-center p-2 rounded-md ml-6" asp-action="Create">add</a>
+    </div>
+
+    <div class="flex flex-wrap justify-start ml-9">
+
+        @foreach (var category in Model)
+        {
+            
+            <div id="session" class="d-flex justify-center items-center flex-col rounded-md h-36 w-72  mr-14 mb-14">
+
+                <a asp-action="Details" asp-route-id="@category.Id">@Html.DisplayFor(modelCategory => category.Name) </a>
+            </div>
+        }
+
+    </div>
+
+</section>

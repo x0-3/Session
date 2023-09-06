@@ -1,22 +1,29 @@
-html {
-  font-size: 14px;
+* body {
+    background-color: #D3BEAD;
+    font-family: "Trykker", serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+    * body header {
+        background-color: #395B7F;
+        color: #EDDAE0;
+    }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+    * body h1 {
+        font-family: "Maven Pro", sans-serif;
+    }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+    * body #add_button a {
+        background-color: #395B7F;
+        color: #D3BEAD;
+    }
 
-body {
-  margin-bottom: 60px;
-}
+        * body #add_button a:hover {
+            background-color: #D3BEAD;
+            color: #395B7F;
+        }
+
+    * body #session {
+        background-color: #161B18;
+        color: #D3BEAD;
+    }
+/*# sourceMappingURL=style.css.map */

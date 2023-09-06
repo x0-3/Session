@@ -1,8 +1,45 @@
-﻿@{
+﻿@model IEnumerable<Session.Models.Sessions>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section>
+    <h1 class="text-center text-2xl font-semibold my-9">Home</h1>
+
+
+
+    <div class="flex mb-20 ml-9" id="add_button">
+
+        <a class="p-2 rounded-md" asp-controller="Sessions" asp-action="Create">add Session</a>
+    </div>
+
+    <div class="d-flex flex-wrap justify-evenly m-9 ">
+
+        @foreach (var session in Model)
+        {
+            
+            <div id="session" class="d-flex rounded-md p-3 h-36 w-25 mb-9">
+                <a class="mr-8" asp-controller="Sessions" asp-action="Details" asp-route-id="@session.Id">
+
+                    <h2 class="text-center text-xl">@Html.DisplayFor(modelSession => session.SessionName)</h2>
+
+                    <div class="d-flex flex-column justify-content-center">
+                        <p>Starts : @Html.DisplayFor(modelSession => session.BeginDate)</p>
+                        <p>Ends : @Html.DisplayFor(modelSession => session.EndDate)</p>
+                        <p>number of space : @Html.DisplayFor(modelSession => session.NbPlace)</p>
+                    </div>
+                </a>
+
+           
+                <div class="d-flex flex-column align-items-center justify-content-end" id="add_button">
+
+                    <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Sessions" asp-action="Edit" asp-route-id="@session.Id">edit</a>
+                    <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Sessions" asp-action="Delete" asp-route-id="@session.Id">delete</a>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</section>
