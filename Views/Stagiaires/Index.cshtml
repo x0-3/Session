@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Session.Models.Stagiaire>
+
+@{
+    ViewData["Title"] = "Stagiaire";
+}
+<section>
+
+    <h1 class="text-center text-2xl font-semibold my-9">List of interns</h1>
+
+    <div class="flex my-9 ml-9" id="add_button">
+        <a class="p-2 w-20 rounded-md text-center mb-2.5" asp-action="Create">add</a>
+
+    </div>
+
+
+    @if (Model != null)
+    {
+        
+        @foreach(var stagiaire in Model)
+        {
+
+            <a class="ml-9" asp-action="Details" asp-route-id="@stagiaire.Id">@Html.DisplayFor(modelStagiaire => stagiaire.Name) </a> <br />
+        }
+    }
+
+</section>
