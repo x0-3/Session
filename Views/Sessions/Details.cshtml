@@ -4,39 +4,65 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<section>
 
-<div>
-    <h4>Sessions</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SessionName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SessionName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BeginDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BeginDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NbPlace)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NbPlace)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-controller="Home" asp-action="Index">Back to List</a>
-</div>
+    <div class="flex justify-center flex-row items-center">
+
+        <h1 class="text-center text-2xl font-semibold my-9 mr-12">@Html.DisplayFor(Model => Model.SessionName)</h1>
+        <p>space left : @Html.DisplayFor(Model => Model.NbPlace)</p>
+    </div>
+
+    <a asp-controller="Programmes" asp-action="Create">add Program</a>
+
+    <h2 class="text-xl font-semibold my-9 ml-9">program</h2>
+
+    <div class="flex flex-wrap justify-start ml-9">
+
+        @if (Model.Programmes != null)
+        {
+            
+            @foreach (var program in Model.Programmes)
+            {
+                <div id="session" class="flex justify-center items-center flex-col rounded-md h-36 w-72  mr-14 mb-14">
+                    <h3 class="text-xl text-center mb-3">@Html.DisplayFor(ModelProgram => program.Module.Name) <br> @Html.DisplayFor(ModelProgram => program.Duree)h <br></h3>
+
+                    <div id="add_button">
+                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Edit" asp-route-id="@program.Id">edit</a>
+                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Delete" asp-route-id="@program.Id">delete</a>
+
+                    </div>
+                </div>
+            
+            }
+        }
+
+    </div>
+
+    <div class="flex justify-around mb-9">
+
+        <div>
+            <br><h2 class="text-xl font-semibold my-9 ml-9">interns for this session</h2>
+
+            <a asp-controller="Stagiaires" asp-action="Create">add Interns</a>
+
+            @if (Model.Stagiaires != null)
+            {
+                
+                @foreach (var stagiaire in Model.Stagiaires)
+                {
+
+                    <a class="ml-9" href="{{path('detail_stagiaire', {'id': stagiaire.id})}}">@Html.DisplayFor(ModelStagiaire => stagiaire.Name) @Html.DisplayFor(ModelStagiaire => stagiaire.LastName)<br></a>
+
+                    <div class="flex ml-9">
+                        <a class="bg-red-700 p-1 w-20 rounded-md text-center mb-2.5" href="{{path('delete_stagiaire_session', {'id': session.id, 'idStagiaire': stagiaire.id})}}">Delete</a>
+
+                    </div>
+                }
+            }
+
+        </div>
+
+
+    </div>
+
+</section>

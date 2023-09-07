@@ -10,94 +10,90 @@ using Session.Models;
 
 namespace Session.Controllers
 {
-    public class ProgrammesController : Controller
+    public class ModulesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProgrammesController(ApplicationDbContext context)
+        public ModulesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Programmes
+        // GET: Modules
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Programme.Include(p => p.Module).Include(p => p.Session);
+            var applicationDbContext = _context.Module.Include(m => m.Category);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Programmes/Details/5
+        // GET: Modules/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Programme == null)
+            if (id == null || _context.Module == null)
             {
                 return NotFound();
             }
 
-            var programme = await _context.Programme
-                .Include(p => p.Module)
-                .Include(p => p.Session)
+            var @module = await _context.Module
+                .Include(m => m.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (programme == null)
+            if (@module == null)
             {
                 return NotFound();
             }
 
-            return View(programme);
+            return View(@module);
         }
 
-        // GET: Programmes/Create
+        // GET: Modules/Create
         public IActionResult Create()
         {
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
-            ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
-        // POST: Programmes/Create
+        // POST: Modules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SessionId,ModuleId,Duree")] Programme programme)
+        public async Task<IActionResult> Create([Bind("Id,Name,CategoryId")] Module @module)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(programme);
+                _context.Add(@module);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", programme.ModuleId);
-            ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName", programme.SessionId);
-            return View(programme);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", @module.CategoryId);
+            return View(@module);
         }
 
-        // GET: Programmes/Edit/5
+        // GET: Modules/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Programme == null)
+            if (id == null || _context.Module == null)
             {
                 return NotFound();
             }
 
-            var programme = await _context.Programme.FindAsync(id);
-            if (programme == null)
+            var @module = await _context.Module.FindAsync(id);
+            if (@module == null)
             {
                 return NotFound();
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", programme.ModuleId);
-            ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName", programme.SessionId);
-            return View(programme);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", @module.CategoryId);
+            return View(@module);
         }
 
-        // POST: Programmes/Edit/5
+        // POST: Modules/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SessionId,ModuleId,Duree")] Programme programme)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CategoryId")] Module @module)
         {
-            if (id != programme.Id)
+            if (id != @module.Id)
             {
                 return NotFound();
             }
@@ -106,12 +102,12 @@ namespace Session.Controllers
             {
                 try
                 {
-                    _context.Update(programme);
+                    _context.Update(@module);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProgrammeExists(programme.Id))
+                    if (!ModuleExists(@module.Id))
                     {
                         return NotFound();
                     }
@@ -122,53 +118,51 @@ namespace Session.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", programme.ModuleId);
-            ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName", programme.SessionId);
-            return View(programme);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", @module.CategoryId);
+            return View(@module);
         }
 
-        // GET: Programmes/Delete/5
+        // GET: Modules/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Programme == null)
+            if (id == null || _context.Module == null)
             {
                 return NotFound();
             }
 
-            var programme = await _context.Programme
-                .Include(p => p.Module)
-                .Include(p => p.Session)
+            var @module = await _context.Module
+                .Include(m => m.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (programme == null)
+            if (@module == null)
             {
                 return NotFound();
             }
 
-            return View(programme);
+            return View(@module);
         }
 
-        // POST: Programmes/Delete/5
+        // POST: Modules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Programme == null)
+            if (_context.Module == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Programme'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Module'  is null.");
             }
-            var programme = await _context.Programme.FindAsync(id);
-            if (programme != null)
+            var @module = await _context.Module.FindAsync(id);
+            if (@module != null)
             {
-                _context.Programme.Remove(programme);
+                _context.Module.Remove(@module);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProgrammeExists(int id)
+        private bool ModuleExists(int id)
         {
-          return (_context.Programme?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Module?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

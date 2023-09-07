@@ -36,7 +36,10 @@ namespace Session.Controllers
             }
 
             var sessions = await _context.Session
+                .Include(e => e.Programmes)
+                .Include(e => e.Stagiaires)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (sessions == null)
             {
                 return NotFound();
@@ -58,6 +61,7 @@ namespace Session.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,SessionName,BeginDate,EndDate,NbPlace")] Sessions sessions)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(sessions);

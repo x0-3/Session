@@ -36,6 +36,7 @@ namespace Session.Controllers
             }
 
             var category = await _context.Category
+                .Include(e => e.Modules)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
