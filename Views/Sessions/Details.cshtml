@@ -12,7 +12,7 @@
         <p>space left : @Html.DisplayFor(Model => Model.NbPlace)</p>
     </div>
 
-    <a asp-controller="Programmes" asp-action="Create">add Program</a>
+    <a asp-controller="Programmes" asp-action="Create" asp-route-sessionId="@Model.Id">add Program</a>
 
     <h2 class="text-xl font-semibold my-9 ml-9">program</h2>
 
@@ -27,7 +27,7 @@
                     <h3 class="text-xl text-center mb-3">@Html.DisplayFor(ModelProgram => program.Module.Name) <br> @Html.DisplayFor(ModelProgram => program.Duree)h <br></h3>
 
                     <div id="add_button">
-                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Edit" asp-route-id="@program.Id">edit</a>
+                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Edit" asp-route-id="@program.Id" asp-route-sessionId="@program.SessionId">edit</a>
                         <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Delete" asp-route-id="@program.Id">delete</a>
 
                     </div>

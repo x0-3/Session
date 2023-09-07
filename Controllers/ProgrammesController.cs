@@ -46,11 +46,14 @@ namespace Session.Controllers
             return View(programme);
         }
 
-        // GET: Programmes/Create
-        public IActionResult Create()
+        // GET: Programmes/Create/{sessionId}
+        public IActionResult Create(int sessionId)
         {
+
+            Sessions sessions = _context.Session.FirstOrDefault(s => s.Id == sessionId);
+
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
-            ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName");
+            ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName", sessions.Id);
             return View();
         }
 
@@ -65,7 +68,7 @@ namespace Session.Controllers
             {
                 _context.Add(programme);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Sessions", new { Id = programme.SessionId });
             }
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", programme.ModuleId);
             ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName", programme.SessionId);
@@ -73,7 +76,7 @@ namespace Session.Controllers
         }
 
         // GET: Programmes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int sessionId)
         {
             if (id == null || _context.Programme == null)
             {
@@ -81,6 +84,8 @@ namespace Session.Controllers
             }
 
             var programme = await _context.Programme.FindAsync(id);
+            Sessions session = _context.Session.FirstOrDefault(s => s.Id == sessionId);
+
             if (programme == null)
             {
                 return NotFound();
@@ -120,7 +125,7 @@ namespace Session.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Sessions", new { Id = programme.SessionId});
             }
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", programme.ModuleId);
             ViewData["SessionId"] = new SelectList(_context.Session, "Id", "SessionName", programme.SessionId);
@@ -163,7 +168,7 @@ namespace Session.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Sessions", new { Id = programme.SessionId });
         }
 
         private bool ProgrammeExists(int id)
