@@ -45,16 +45,32 @@ namespace Session.Controllers
             return View(@module);
         }
 
-        // GET: Modules/Create
-        public IActionResult Create()
+        // GET: Modules/Create/{categoryId}
+        public IActionResult Create(int? categoryId)
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
-            return View();
+            if (categoryId == null)
+            {
+                return NotFound();
+            }
+
+            // Retrieve the category based on the categoryId
+            Category category = _context.Category.FirstOrDefault(c => c.Id == categoryId);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            // Pass the category and its ID to the view
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", category.Id);
+
+            // Create a new Module with the retrieved category
+            Module module = new Module { CategoryId = category.Id };
+
+            return View(module);
         }
 
-        // POST: Modules/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Modules/Create/{categoryId}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,CategoryId")] Module @module)
@@ -65,9 +81,11 @@ namespace Session.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", @module.CategoryId);
             return View(@module);
         }
+
 
         // GET: Modules/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -12,7 +12,7 @@
     <div class="flex my-9 ml-9" id="add_button">
         <a class="p-2 rounded-md" asp-action="Edit" asp-route-id="@Model?.Id">edit category</a>
         <a class="p-2 rounded-md ml-6" asp-action="Delete" asp-route-id="@Model?.Id">delete category</a>
-        <a class="p-2 rounded-md ml-6" asp-controller="Modules" asp-action="Create">add modules</a>
+        <a class="p-2 rounded-md ml-6" asp-controller="Modules" asp-action="Create" asp-route-categoryId="@Model?.Id">add modules</a>
     </div>
 
 
