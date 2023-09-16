@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<Session.Models.Sessions>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,11 +10,15 @@
     <h1 class="text-center text-2xl font-semibold my-9">Home</h1>
 
 
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+        <div class="flex mb-20 ml-9" id="add_button">
 
-    <div class="flex mb-20 ml-9" id="add_button">
+             <a class="p-2 rounded-md" asp-controller="Sessions" asp-action="Create">add Session</a>
 
-        <a class="p-2 rounded-md" asp-controller="Sessions" asp-action="Create">add Session</a>
-    </div>
+        </div>
+    }
 
     <div class="d-flex flex-wrap justify-evenly m-9 ">
 
@@ -31,12 +37,15 @@
                     </div>
                 </a>
 
-           
-                <div class="d-flex flex-column align-items-center justify-content-end" id="add_button">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    
+                    <div class="d-flex flex-column align-items-center justify-content-end" id="add_button">
 
-                    <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Sessions" asp-action="Edit" asp-route-id="@session.Id">edit</a>
-                    <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Sessions" asp-action="Delete" asp-route-id="@session.Id">delete</a>
-                </div>
+                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Sessions" asp-action="Edit" asp-route-id="@session.Id">edit</a>
+                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Sessions" asp-action="Delete" asp-route-id="@session.Id">delete</a>
+                    </div>
+                }
 
             </div>
         }

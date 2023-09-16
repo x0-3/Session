@@ -1,19 +1,25 @@
 ﻿@model Session.Models.Category
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Html.DisplayFor(model => model.Name);
 }
 
 <section>
 
     <h1 class="text-center text-2xl font-semibold my-9">@Html.DisplayFor(model => model.Name)</h1>
 
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+        <div class="flex my-9 ml-9" id="add_button">
+            <a class="p-2 rounded-md" asp-action="Edit" asp-route-id="@Model?.Id">edit category</a>
+            <a class="p-2 rounded-md ml-6" asp-action="Delete" asp-route-id="@Model?.Id">delete category</a>
+            <a class="p-2 rounded-md ml-6" asp-controller="Modules" asp-action="Create" asp-route-categoryId="@Model?.Id">add modules</a>
+        </div>
+    }
 
-    <div class="flex my-9 ml-9" id="add_button">
-        <a class="p-2 rounded-md" asp-action="Edit" asp-route-id="@Model?.Id">edit category</a>
-        <a class="p-2 rounded-md ml-6" asp-action="Delete" asp-route-id="@Model?.Id">delete category</a>
-        <a class="p-2 rounded-md ml-6" asp-controller="Modules" asp-action="Create" asp-route-categoryId="@Model?.Id">add modules</a>
-    </div>
 
 
     <div class="flex flex-wrap justify-evenly">
@@ -28,11 +34,15 @@
 
                     <h2 class="text-center text-xl">@Html.DisplayFor(modelModule => module.Name)</h2>
 
-                    <div class="flex flex-col items-center justify-end" id="add_button">
-                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Modules" asp-action="Edit" asp-route-id="@module.Id">edit</a>
-                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Modules" asp-action="Delete" asp-route-id="@module.Id">delete</a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        
+                        <div class="flex flex-col items-center justify-end" id="add_button">
+                            <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Modules" asp-action="Edit" asp-route-id="@module.Id">edit</a>
+                            <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Modules" asp-action="Delete" asp-route-id="@module.Id">delete</a>
 
-                    </div>
+                        </div>
+                    }
 
                 </div>
             }

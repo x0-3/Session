@@ -1,4 +1,6 @@
 ﻿@model Session.Models.Sessions
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
     ViewData["Title"] = "Details";
@@ -12,7 +14,11 @@
         <p>space left : @Html.DisplayFor(Model => Model.NbPlace)</p>
     </div>
 
-    <a asp-controller="Programmes" asp-action="Create" asp-route-sessionId="@Model.Id">add Program</a>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+        <a asp-controller="Programmes" asp-action="Create" asp-route-sessionId="@Model.Id">add Program</a>
+    }
 
     <h2 class="text-xl font-semibold my-9 ml-9">program</h2>
 
@@ -26,11 +32,16 @@
                 <div id="session" class="flex justify-center items-center flex-col rounded-md h-36 w-72  mr-14 mb-14">
                     <h3 class="text-xl text-center mb-3">@Html.DisplayFor(ModelProgram => program.Module.Name) <br> @Html.DisplayFor(ModelProgram => program.Duree)h <br></h3>
 
-                    <div id="add_button">
-                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Edit" asp-route-id="@program.Id" asp-route-sessionId="@program.SessionId">edit</a>
-                        <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Delete" asp-route-id="@program.Id">delete</a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        
+                        <div id="add_button">
+                            <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Edit" asp-route-id="@program.Id" asp-route-sessionId="@program.SessionId">edit</a>
+                            <a class="p-1 w-20 rounded-md text-center mb-2.5" asp-controller="Programmes" asp-action="Delete" asp-route-id="@program.Id">delete</a>
 
-                    </div>
+                        </div>
+                    }
+
                 </div>
             
             }
@@ -38,31 +49,35 @@
 
     </div>
 
-    <div class="flex justify-around mb-9">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+        <div class="flex justify-around mb-9">
 
-        <div>
-            <br><h2 class="text-xl font-semibold my-9 ml-9">interns for this session</h2>
+            <div>
+                <br><h2 class="text-xl font-semibold my-9 ml-9">interns for this session</h2>
+  
+                <a asp-controller="Stagiaires" asp-action="Create">add Interns</a>
+            
 
-            <a asp-controller="Stagiaires" asp-action="Create">add Interns</a>
-
-            @if (Model.Stagiaires != null)
-            {
-                
-                @foreach (var stagiaire in Model.Stagiaires)
+                @if (Model.Stagiaires != null)
                 {
+                
+                    @foreach (var stagiaire in Model.Stagiaires)
+                    {
 
-                    <a class="ml-9" href="{{path('detail_stagiaire', {'id': stagiaire.id})}}">@Html.DisplayFor(ModelStagiaire => stagiaire.Name) @Html.DisplayFor(ModelStagiaire => stagiaire.LastName)<br></a>
+                        <a class="ml-9" href="{{path('detail_stagiaire', {'id': stagiaire.id})}}">@Html.DisplayFor(ModelStagiaire => stagiaire.Name) @Html.DisplayFor(ModelStagiaire => stagiaire.LastName)<br></a>
 
-                    <div class="flex ml-9">
-                        <a class="bg-red-700 p-1 w-20 rounded-md text-center mb-2.5" href="{{path('delete_stagiaire_session', {'id': session.id, 'idStagiaire': stagiaire.id})}}">Delete</a>
+                        <div class="flex ml-9">
+                            <a class="bg-red-700 p-1 w-20 rounded-md text-center mb-2.5" href="{{path('delete_stagiaire_session', {'id': session.id, 'idStagiaire': stagiaire.id})}}">Delete</a>
 
-                    </div>
+                        </div>
+                    }
                 }
-            }
+
+            </div>
 
         </div>
-
-
-    </div>
+    }
 
 </section>
