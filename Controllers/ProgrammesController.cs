@@ -49,7 +49,7 @@ namespace Session.Controllers
 
         [Authorize]
         // GET: Programmes/Create/{sessionId}
-        public IActionResult Create(int sessionId)
+        public IActionResult Create(int? sessionId)
         {
 
             Sessions sessions = _context.Session.FirstOrDefault(s => s.Id == sessionId);
@@ -60,7 +60,7 @@ namespace Session.Controllers
         }
 
         [Authorize]
-        // POST: Programmes/Create
+        // POST: Programmes/Create/{sessionId}
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -79,7 +79,7 @@ namespace Session.Controllers
         }
 
         [Authorize]
-        // GET: Programmes/Edit/5
+        // GET: Programmes/Edit/5/{sessionId}
         public async Task<IActionResult> Edit(int? id, int sessionId)
         {
             if (id == null || _context.Programme == null)
@@ -100,7 +100,7 @@ namespace Session.Controllers
         }
 
         [Authorize]
-        // POST: Programmes/Edit/5
+        // POST: Programmes/Edit/5/{sessionId}
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]

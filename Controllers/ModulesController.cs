@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 using Session.Data;
 using Session.Models;
 
@@ -67,9 +68,9 @@ namespace Session.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", category.Id);
 
             // Create a new Module with the retrieved category
-            Module module = new Module { CategoryId = category.Id };
+            /*Module module = new Module { CategoryId = category.Id };*/
 
-            return View(module);
+            return View();
         }
 
         [Authorize]
@@ -82,7 +83,7 @@ namespace Session.Controllers
             {
                 _context.Add(@module);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Categories", new { Id = @module.CategoryId });
             }
 
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", @module.CategoryId);
@@ -90,8 +91,8 @@ namespace Session.Controllers
         }
 
         [Authorize]
-        // GET: Modules/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Modules/Edit/5/{categoryId}
+        public async Task<IActionResult> Edit(int? id, int CategoryId)
         {
             if (id == null || _context.Module == null)
             {
@@ -99,6 +100,8 @@ namespace Session.Controllers
             }
 
             var @module = await _context.Module.FindAsync(id);
+            Category category = _context.Category.FirstOrDefault(c => c.Id == CategoryId);
+
             if (@module == null)
             {
                 return NotFound();
@@ -108,7 +111,7 @@ namespace Session.Controllers
         }
 
         [Authorize]
-        // POST: Modules/Edit/5
+        // POST: Modules/Edit/5/{categoryId}
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -138,7 +141,7 @@ namespace Session.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Categories", new { Id = @module.CategoryId });
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", @module.CategoryId);
             return View(@module);
@@ -181,7 +184,7 @@ namespace Session.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Categories", new { Id = @module.CategoryId });
         }
 
         private bool ModuleExists(int id)
