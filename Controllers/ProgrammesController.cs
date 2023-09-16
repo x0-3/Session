@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,7 @@ namespace Session.Controllers
             return View(programme);
         }
 
+        [Authorize]
         // GET: Programmes/Create/{sessionId}
         public IActionResult Create(int sessionId)
         {
@@ -57,6 +59,7 @@ namespace Session.Controllers
             return View();
         }
 
+        [Authorize]
         // POST: Programmes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -75,6 +78,7 @@ namespace Session.Controllers
             return View(programme);
         }
 
+        [Authorize]
         // GET: Programmes/Edit/5
         public async Task<IActionResult> Edit(int? id, int sessionId)
         {
@@ -95,6 +99,7 @@ namespace Session.Controllers
             return View(programme);
         }
 
+        [Authorize]
         // POST: Programmes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -132,6 +137,7 @@ namespace Session.Controllers
             return View(programme);
         }
 
+        [Authorize]
         // GET: Programmes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -152,6 +158,7 @@ namespace Session.Controllers
             return View(programme);
         }
 
+        [Authorize]
         // POST: Programmes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
